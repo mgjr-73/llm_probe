@@ -6,6 +6,8 @@ import anthropic
 from dotenv import load_dotenv
 from prompts import PROMPT_CATEGORIES
 from logger import log_record
+from analyzer import analyze_response
+
 
 load_dotenv()
 
@@ -31,6 +33,7 @@ def call_anthropic(prompt):
 for prompt in PROMPT_CATEGORIES["baseline"]:
     start_time = time.time()
     response = call_anthropic(prompt)
+    flags = analyze_response(response)
     end_time = time.time()
 
     latency = round(end_time - start_time, 3)
@@ -40,7 +43,8 @@ for prompt in PROMPT_CATEGORIES["baseline"]:
     "prompt": prompt,
     "response": response,
     "response_length": len(response),
-    "latency": latency
+    "latency": latency,
+    "flags": flags
     }
 
     log_record(record)
@@ -52,5 +56,7 @@ for prompt in PROMPT_CATEGORIES["baseline"]:
     print(response)
 
     print(f"Response time: {latency:.2f} seconds")
+
+    print(f"Flags: {', '.join(map(str, flags or []))}")
 
     print("-" * 40)
