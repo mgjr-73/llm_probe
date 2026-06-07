@@ -1,5 +1,7 @@
 # About This Project
-I wanted to learn how LLM works so I asked AI to recommend a project that I can do over the weekend. It suggested a tool for probing and logging LLM API responses for behavioral anomalies. I then asked it to generate a project blueprint that I can follow. We're calling it `llm_probe`.
+I wanted to learn how LLM works so I asked AI to recommend a project that I can do over the weekend. It suggested a tool for probing and logging LLM API responses for behavioral anomalies. I then asked it to generate a project blueprint that I can follow. We're calling it `llm_probe`, a tool that sends categorized prompts to an LLM, logs the responses, and highlights potentially interesting behavior for further analysis.
+
+
 
 # Project Structure / Architecture
 ```
