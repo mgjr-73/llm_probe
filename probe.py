@@ -1,3 +1,4 @@
+
 import os
 import time
 
@@ -7,9 +8,17 @@ from dotenv import load_dotenv
 from prompts import PROMPT_CATEGORIES
 from logger import log_record
 from analyzer import analyze_response
-
+from datetime import datetime
 
 load_dotenv()
+
+# Create results directory if it doesn't exist
+os.makedirs("results", exist_ok=True)
+
+# Generate file date and run ID for logging
+filename = datetime.now().strftime("%Y-%m-%d")
+run_id = datetime.now().strftime("%Y%m%d_%H%M%S")
+
 
 client = anthropic.Anthropic(
     api_key=os.getenv("ANTHROPIC_API_KEY")
@@ -31,6 +40,7 @@ def call_anthropic(prompt):
 
 
 for prompt in PROMPT_CATEGORIES["baseline"]:
+    timestamp = datetime.now().isoformat()
     start_time = time.time()
     response = call_anthropic(prompt)
     flags = analyze_response(response)
@@ -39,6 +49,8 @@ for prompt in PROMPT_CATEGORIES["baseline"]:
     latency = round(end_time - start_time, 3)
 
     record = {
+    "timestamp": timestamp,
+    "run_id": run_id,
     "category": "baseline",
     "prompt": prompt,
     "response": response,
@@ -47,7 +59,7 @@ for prompt in PROMPT_CATEGORIES["baseline"]:
     "flags": flags
     }
 
-    log_record(record)
+    log_record(filename, record)
 
     print("Prompt:")
     print(prompt)
