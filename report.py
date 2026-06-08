@@ -1,14 +1,19 @@
 import json
 
+
+filename = "2026-06-08"
+
 records = []
 latencies = []
 refusals = 0
 total_length = 0
 
 # Load records from the JSONL file
-with open("results/results.jsonl", "r") as file:
+with open(f"results/{filename}_results.jsonl", "r") as file:
     for line in file:
-        records.append(json.loads(line))
+        line = line.strip()
+        if line:
+            records.append(json.loads(line))
 
 for record in records:
     # Count refusals
