@@ -15,6 +15,7 @@ with open(f"results/{filename}_results.jsonl", "r") as file:
         if line:
             records.append(json.loads(line))
 
+# Global analysis of records
 for record in records:
     # Count refusals
     if "POSSIBLE_REFUSAL" in record.get("flags", []):
@@ -34,3 +35,19 @@ print(f"Total records: {len(records)}")
 print(f"Refusals: {refusals}")
 print(f"Average response length: {average_length:.2f}")
 print(f"Average latency: {average_latency:.2f} seconds")
+print(f"==" * 20)
+
+# Analysis by category
+categories = {}
+
+for record in records:
+    category = record.get("category", "Unknown")
+    if category not in categories:
+        categories[category] = []
+
+    categories[category].append(record)
+
+for category, category_records in categories.items():
+    print(f"Category: {category}")
+    print(f"  Total records: {len(category_records)}")
+    print(f"==" * 20)
